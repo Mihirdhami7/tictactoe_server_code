@@ -1,0 +1,43 @@
+    {% comment %} <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Django App</title>
+    </head>
+    <body>
+        <h1>Welcome to My Django App!</h1>
+        <form method="post">
+            {% csrf_token %}
+            <!-- form fields here -->
+            <button type="submit">Submit</button>
+        </form>
+        <script>
+            const roomName = 'test'; // Replace with dynamic room name if needed
+            const socket = new WebSocket(`wss://ec28-2409-40c1-4036-5c1-51ce-5d41-e4f0-d0d7.ngrok-free.app/ws/test/`);
+        
+            socket.onopen = function(e) {
+                console.log("[open] Connection established");
+                console.log("Sending to server");
+                const message = JSON.stringify({ boxid: "box1", move: "move1" });
+                socket.send(message);
+            };
+        
+            socket.onmessage = function(event) {
+                console.log(`[message] Data received from server: ${event.data}`);
+            };
+        
+            socket.onclose = function(event) {
+                if (event.wasClean) {
+                    console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+                } else {
+                    console.log('[close] Connection died');
+                }
+            };
+        
+            socket.onerror = function(error) {
+                console.log(`[error] ${error.message}`);
+            };
+        </script>
+    </body>
+    </html> {% endcomment %}
